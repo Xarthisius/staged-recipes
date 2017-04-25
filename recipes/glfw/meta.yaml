@@ -1,0 +1,56 @@
+{% set name = "glfw" %}
+{% set version = "3.2.1" %}
+{% set sha256 = "b7d55e13e07095119e7d5f6792586dd0849c9fcdd867d49a4a5ac31f982f7326" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  fn: {{ name }}-{{ version }}.zip
+  url: https://github.com/{{ name }}/{{ name }}/releases/download/{{ version }}/{{ name }}-{{ version }}.zip
+  sha256: "b7d55e13e07095119e7d5f6792586dd0849c9fcdd867d49a4a5ac31f982f7326"
+
+build:
+  number: 0
+  features:
+    - vc9   # [win and py27]
+    - vc10  # [win and py34]
+    - vc14  # [win and py35]
+    - vc14  # [win and py36]
+
+requirements:
+  build:
+    - cmake
+    - toolchain
+    - vc 9    # [win and py27]
+    - vc 10   # [win and py34]
+    - vc 14   # [win and py35]
+    - vc 14   # [win and py36]
+  run:
+    - vc 9    # [win and py27]
+    - vc 10   # [win and py34]
+    - vc 14   # [win and py35]
+    - vc 14   # [win and py36]
+
+test:
+  commands:
+    - test -f $PREFIX/lib/libglfw.dylib  # [osx]
+    - test -f $PREFIX/lib/libglfw.so  # [linux]
+    - if not exist %PREFIX%\\Library\\lib\\glfw3.dll exit 1  # [win]
+
+about:
+  home: http://www.glfw.org/
+  license: ZLIB
+  license_file: COPYING.txt
+  summary: 'The Portable OpenGL FrameWork'
+  description: |
+    GLFW is an Open Source, multi-platform library for OpenGL, OpenGL ES and
+    Vulkan development on the desktop. It provides a simple API for creating
+    windows, contexts and surfaces, receiving input and events.
+  doc_url: http://www.glfw.org/documentation.html
+  dev_url: https://github.com/glfw/glfw/
+
+extra:
+  recipe-maintainers:
+    - Xarthisius
